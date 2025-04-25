@@ -1,0 +1,53 @@
+# {{ project_name | title }}
+
+{% if description %}
+> {{ description }}
+{% endif %}
+
+{% if has_readme == False %}
+📝 This project didn't have a README. So here's one auto-generated for you!
+{% endif %}
+
+---
+
+## 🗂️ Project Structure
+```
+{% import 'macros.jinja' as macros %}
+{{ project_name }}/
+{{ macros.render_tree(file_tree, prefix='') }}
+```
+---
+
+## 🛠️ Technologies Used
+{% if languages %}
+This project uses:
+{% for lang in languages %}
+- {{ lang }}
+{% endfor %}
+{% else %}
+No specific languages detected.
+{% endif %}
+
+---
+
+{% if has_requirements %}
+
+## 📥 Installation
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+{% endif %}
+
+
+{% if has_license %}
+
+---
+## 📄 License
+This project includes a license file.
+
+{% endif %}
+
+---

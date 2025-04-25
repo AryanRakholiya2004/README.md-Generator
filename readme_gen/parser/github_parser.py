@@ -1,38 +1,47 @@
 import os
-import shutil
-import tempfile
 from dataclasses import dataclass
+from readme_gen.logger import logging
 from git import Repo
 from pathlib import Path
 
+
 @dataclass
 class GitHubParserConfig:
-    temp_dir_path: str = str(Path(__file__).resolve().parent.parent / "temp_project_directory/clone_projects")
+    temp_dir_base: str = str(Path(__file__).resolve().parent.parent / "temp_project_directory" / "cloned_projects")
+
 
 class GitHubParser:
     def __init__(self):
-        self.temp_dir_path = GitHubParserConfig.temp_dir_path
+        logging.info("Initializing GitHubParser...")
+        self.base_temp_path = GitHubParserConfig.temp_dir_base
         self.project_name = ''
-        self.ignore_list = ['.git', '__pycache__', '.idea', '.vscode', '.DS_Store']
+        self.dir_ignore_patterns = ['.git', '__pycache__', '.idea', '.vscode', '.DS_Store']
+        self.file_ignore_names = ['.gitignore', '.gitattributes']
+
+    def is_ignored(self, path: str) -> bool:
+        # Ignore if any part of the path contains an ignored directory
+        for pattern in self.dir_ignore_patterns:
+            if pattern in Path(path).parts:
+                return True
+        return False
 
     def parse_repo(self, repo_url: str):
         try:
+            logging.info("Parsing GitHub repository...")
             print("📦 Cloning repository...")
 
-            # Ensure unique directory for cloning
-            clone_dir = os.path.join(self.temp_dir_path, Path(repo_url).stem)
+            # Create unique directory for cloning
             counter = 1
-            while os.path.exists(clone_dir):
-                clone_dir = os.path.join(self.temp_dir_path, f"{Path(repo_url).stem}_{counter}")
+            repo_name = Path(repo_url).stem
+            clone_path = os.path.join(self.base_temp_path, repo_name)
+
+            while os.path.exists(clone_path):
+                clone_path = os.path.join(self.base_temp_path, f"{repo_name}_{counter}")
                 counter += 1
 
-            Repo.clone_from(repo_url, clone_dir)
-            self.temp_dir_path = clone_dir  # Update temp_dir_path to point to the actual cloned directory
+            Repo.clone_from(repo_url, clone_path)
+            self.project_name = repo_name
 
-            # Get project name
-            self.project_name = Path(repo_url).stem
-
-            # Extract metadata
             metadata = {
                 "project_name": self.project_name,
                 "files": [],
@@ -43,34 +52,42 @@ class GitHubParser:
                 "languages": set()
             }
 
+            for root, dirs, files in os.walk(clone_path):
+                rel_root = os.path.relpath(root, clone_path)
 
+                if self.is_ignored(root):
+                    continue
 
-            for root, dirs, files in os.walk(self.temp_dir_path):
-                for dir in dirs:
-                    dir_path = os.path.join(root, dir)
-                    metadata["directories"].append(os.path.relpath(dir_path, self.temp_dir_path))
+                if rel_root != '.':
+                    metadata["directories"].append(rel_root)
 
                 for file in files:
                     file_path = os.path.join(root, file)
-                    metadata["files"].append(os.path.relpath(file_path, self.temp_dir_path))
+                    rel_path = os.path.relpath(file_path, clone_path)
+
+                    if self.is_ignored(file_path) or file in self.file_ignore_names:
+                        continue
+
+                    metadata["files"].append(rel_path)
 
                     if file.lower() == "readme.md":
                         metadata["has_readme"] = True
-                    if file.lower() == "license":
+                    elif file.lower() == "license":
                         metadata["has_license"] = True
-                    if file.lower() == "requirements.txt":
+                    elif file.lower() == "requirements.txt":
                         metadata["has_requirements"] = True
 
-                    # Language detection based on file extension
+                    # Language detection
                     ext = os.path.splitext(file)[1]
                     if ext:
                         metadata["languages"].add(ext.lower())
 
             metadata["languages"] = list(metadata["languages"])
 
-            print("✅ Repository cloned successfully !")
+            print("✅ Repository cloned and parsed successfully!")
+            logging.info("Repository cloned and parsed successfully!")
             return metadata
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"❌ Error: {e}")
             raise RuntimeError(f"Failed to parse GitHub repo: {e}")

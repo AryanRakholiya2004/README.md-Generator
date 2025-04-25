@@ -3,7 +3,6 @@ import os
 from datetime import datetime
 
 
-
 LOG_DIR = datetime.now().strftime('%m_%d_%Y')  # Directory named with current date
 log_path = os.path.join(os.getcwd(), 'logs', LOG_DIR)
 os.makedirs(log_path, exist_ok=True)
@@ -13,6 +12,7 @@ LOG_FILE_PATH = os.path.join(log_path, LOG_FILE)
 
 logging.basicConfig(
     filename=LOG_FILE_PATH,
-    format="[ %(asctime)s ] [ %(levelname)s ] %(name)s - %(lineno)s : %(message)s",
+    format="[ %(asctime)s ] [ %(levelname)s ] %(name)s - %(filename)s - %(lineno)d : %(message)s",
     level=logging.INFO,
 )
+logger = logging.getLogger(__name__)

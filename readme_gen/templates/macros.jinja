@@ -1,0 +1,9 @@
+{%- macro render_tree(tree, prefix='') -%}
+{%- for name, subtree in tree.items() %}
+{{ prefix }}{% if loop.last %}└──{% else %}├──{% endif %}
+{%- if subtree is mapping %} 📁 {{ name }}
+{{ render_tree(subtree, prefix + ('    ' if loop.last else '│   ')) }}
+{%- else %} 📄 {{ name }}{{ '\n' }}
+{%- endif %}
+{% endfor %}
+{%- endmacro %}
