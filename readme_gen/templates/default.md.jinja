@@ -1,12 +1,18 @@
 # {{ project_name | title }}
 
+---
+## ✉️ Project overview
 {% if description %}
 > {{ description }}
+{% else %}
+<code>❯ REPLACE-ME</code>
 {% endif %}
 
-{% if has_readme == False %}
-📝 This project didn't have a README. So here's one auto-generated for you!
-{% endif %}
+---
+
+## 🍵 Features
+
+<code>❯ REPLACE-ME</code>
 
 ---
 
@@ -26,6 +32,7 @@ This project uses:
 {% endfor %}
 {% else %}
 No specific languages detected.
+<code>❯ REPLACE-ME</code>
 {% endif %}
 
 ---

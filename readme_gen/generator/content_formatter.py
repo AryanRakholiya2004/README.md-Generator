@@ -12,6 +12,8 @@ class ContentFormatter:
     def __init__(self):
         self.config = ContentFormatterConfig()
         self.env = Environment(loader=FileSystemLoader(self.config.template_dir))
+        self.project_dir = str(Path(__file__).resolve().parent.parent / "temp_project_directory/cloned_projects")
+        self.description_file_path: str = str(Path(self.project_dir).resolve() / "project_description.txt")
         self.metadata = {}
 
     def normalize_languages(self, extensions):
@@ -84,8 +86,15 @@ class ContentFormatter:
         # template_dir = Path(__file__).resolve().parent.parent / "templates"
         env = Environment(loader=FileSystemLoader(self.config.template_dir),trim_blocks=True,lstrip_blocks=True)
 
+        # appending project description
+        with open(self.description_file_path, 'r', encoding='utf-8') as f:
+            description_content = f.readlines()
+
+        metadata['description'] = str(description_content[0])
+
         # Converting file extensions to actual language names
         metadata['languages'] = self.normalize_languages(metadata['languages'])
+
         self.metadata = metadata
 
         env.globals['build_file_tree'] = build_file_tree

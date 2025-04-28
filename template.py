@@ -25,8 +25,8 @@ list_of_files = [
     f"{project_name}/tests/test_local_parser.py",
     f"{project_name}/tests/test_github_parser.py",
 
-    f"{project_name}/temp_project_directory/project_requirements.txt",
-    f"{project_name}/temp_project_directory/project_structure.txt",
+    f"{project_name}/temp_project_directory/cloned_projects/project_requirements.txt",
+    f"{project_name}/temp_project_directory/cloned_projects/project_structure.txt",
 
     f"{project_name}/exception.py",
     f"{project_name}/logger.py",
@@ -34,7 +34,6 @@ list_of_files = [
 
     "app.py",
     "requirements.txt",
-    "setup.py",
     "README.md"
 ]
 

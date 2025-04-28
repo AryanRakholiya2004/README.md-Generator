@@ -28,7 +28,6 @@ class GitHubParser:
     def parse_repo(self, repo_url: str):
         try:
             logging.info("Parsing GitHub repository...")
-            print("📦 Cloning repository...")
 
             # Create unique directory for cloning
             counter = 1
@@ -84,7 +83,6 @@ class GitHubParser:
 
             metadata["languages"] = list(metadata["languages"])
 
-            print("✅ Repository cloned and parsed successfully!")
             logging.info("Repository cloned and parsed successfully!")
             return metadata
 

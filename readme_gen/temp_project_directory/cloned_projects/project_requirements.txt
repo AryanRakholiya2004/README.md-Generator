@@ -1,1 +1,11 @@
-git-python==1.0.3
+catboost
+dagshub
+dotenv
+joblib
+lightgbm
+mlflow
+numpy
+pandas
+setuptools
+streamlit
+xgboost
