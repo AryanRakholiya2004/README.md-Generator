@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from readme_gen.logger import logging
-from readme_gen.generator.content_formatter import ContentFormatter
 from pathlib import Path
 import os
 import re

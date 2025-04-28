@@ -11,8 +11,8 @@ st.title("README.md Generator")
 
 # Input fields
 st.sidebar.header("Input Parameters")
-api_key = st.sidebar.text_input("Gemini API Key", type="password",value='AIzaSyA2AcQKRByAmWBflY-1kwU29qcibr71QJI')
-repo_url = st.sidebar.text_input("GitHub Repository URL",value='https://github.com/AryanRakholiya2004/Bank-customer-churn-end-to-end-project')
+api_key = st.sidebar.text_input("Gemini API Key", type="password",placeholder='Paste your Gemini API key here')
+repo_url = st.sidebar.text_input("GitHub Repository URL",placeholder='Paste your GitHub repository URL here')
 
 
 if st.sidebar.button("Generate README"):
