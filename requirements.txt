@@ -1,4 +1,5 @@
 git-python==1.0.3
 generativeai
+google
 streamlit
 beautifulsoup4
