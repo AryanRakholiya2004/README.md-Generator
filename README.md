@@ -7,7 +7,9 @@
 
 ---
 
-## ![alt text](image.png)
+## Preview
+
+<a href="https://readme-generator-aryan-rakholiya.streamlit.app/">![alt text](image.png)</a>
 
 ---
 
