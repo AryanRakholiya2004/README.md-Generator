@@ -1,11 +1,6 @@
-catboost
-dagshub
-dotenv
-joblib
-lightgbm
-mlflow
-numpy
-pandas
-setuptools
+beautifulsoup4
+bs4
+dataclass
+generativeai
+jinja2
 streamlit
-xgboost

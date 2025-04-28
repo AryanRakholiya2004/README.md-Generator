@@ -11,8 +11,8 @@ st.title("README.md Generator")
 
 # Input fields
 st.sidebar.header("Input Parameters")
-api_key = st.sidebar.text_input("Gemini API Key", type="password",placeholder='Paste your Gemini API key here')
 repo_url = st.sidebar.text_input("GitHub Repository URL",placeholder='Paste your GitHub repository URL here')
+api_key = st.sidebar.text_input("Gemini API Key", type="password",placeholder='Paste your Gemini API key here')
 
 
 if st.sidebar.button("Generate README"):
@@ -44,6 +44,20 @@ if st.sidebar.button("Generate README"):
                 file.write(generated_readme)
 
             logging.info('README file has been generated and saved as genREADME.md.')
+
+            st.markdown(
+                """
+                <style>
+                .stTabs [role="tablist"] {
+                    width: 100%; /* Adjust the width as needed */
+                }
+                .stTabs [role="tabpanel"] {
+                    width: 100%; /* Adjust the width as needed */
+                }
+                </style>
+                """,
+                unsafe_allow_html=True
+            )
 
             # Display the generated README content
             st.success("README.md has been generated successfully!")
